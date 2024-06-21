@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% load crispy_forms_tags %} {% block content %}
+
+<form
+  action=""
+  method="POST"
+  class="w-50 card p-3 shadow my-5 mx-auto rounded bg-light"
+>
+  <h2 class="text-center">Register</h2>
+  <hr />
+  {% csrf_token %} {{ form | crispy}}
+  <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row my-5">
+    <div class="col-md-3 shadow">
+        <div class="d-flex flex-column">
+              <a class="text-decoration-none btn btn-secondary text-white d-block my-2" href="{% url "home" %}">All</a>
+              {% for cat in categories %}
+              <a href="{% url "book_by_category" cat.id %}" class="text-decoration-none btn text-white d-block my-2 {% if selected_category.name == cat.name %}btn-primary{% else %}btn-secondary{% endif %}">{{ cat.name }}</a>
+              {% endfor %}
+          </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row g-3">
+            {% for book in books %}
+            <div class="col-md-4">
+                <div class="card" style="">
+                    <img height="400px" src="{{book.image.url}}" class="card-img-top" alt="{{book.name}}">
+                    <div class="card-body">
+                      <h5 class="card-title">{{book.name}}</h5>
+                      <p class="card-text">{{book.details|truncatewords:20}}</p>
+                      <p class="card-text">{{book.borrow_price}}</p>
+                      <a href="{% url "details" book.id %}" class="btn btn-primary">See Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

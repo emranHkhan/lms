@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Borrow Records</h2>
+    <hr>
+    <table class="table table-striped border mt-5">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Borrow Price</th>
+            <th>Balance After Transactions</th>
+            <th>Borrow Date</th>
+            <th>Book</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+         
+          {% for record in records %}
+          <tr>
+            <td>{{ user }}</td>
+            <td>{{record.book.borrow_price}}</td>
+            <td>{{record.balance_after_transaction}}</td>
+            <td>{{ record.borrow_date }}</td>
+            <td>{{ record.book }}</td>
+            <td>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{user.id}}" name="user-id">
+                    <input type="hidden" value="{{record.id}}" name="borrow-id">
+                    <input type="hidden" value="{{record.book.borrow_price}}" name="borrow-price">
+                    {% if record.is_returned %}
+                    <button class="btn" disabled>Returned</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary">Return</button>
+                {% endif %}
+                </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+{% endblock %}

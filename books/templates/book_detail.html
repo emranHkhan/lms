@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="shadow d-flex w-75 mx-auto my-5">
+    <img src="{{book.image.url}}" class="" alt="{{book.name}}" />
+    <div class="p-3">
+      <h5 class="">{{book.name}}</h5>
+      <p class="">{{book.details}}</p>
+      <p class="">{{book.category}}</p>
+      <p class="">{{book.borrow_price}}</p>
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url "borrow" book.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Borrow</button>
+      </form>
+      {% endif %}
+    </div>
+</div>
+
+{% if reviews %}
+  <div class="my-2 p-3 w-75 mx-auto">
+    <h2 class="p-2">Total Reviews: {{reviews | length}}</h2>
+    <hr />
+    <div class="card-body">
+      {% for review in reviews %}
+      <p>{{review.reviewer_name}}</p>
+      <p>{{review.reviewer_email}}</p>
+      <p>{{review.review_text}}</p>
+      <p>{{review.created_on}}</p>
+      <hr />
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %} 
+
+  {% if user.is_authenticated and user_has_borrowed %}
+  <div class="p-3 w-75 mx-auto">
+    <h2 class="text-center my-2">Add Review</h2>
+    <hr />
+    <form action="" method="POST">
+      {% csrf_token %} {{review_form|crispy}}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  {% endif %}
+
+{% endblock %}
