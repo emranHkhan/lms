@@ -31,7 +31,7 @@ class BookDetailView(DetailView):
     pk_url_kwarg = 'id'
     template_name = 'book_detail.html'
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         review_form = forms.ReviewForm(data=request.POST)
 
@@ -52,17 +52,14 @@ class BookDetailView(DetailView):
         reviews = book.reviews.all()
         review_form = forms.ReviewForm()
 
-        
         user_has_borrowed = False
         if self.request.user.is_authenticated:
             user_has_borrowed = Borrow.objects.filter(user=self.request.user, book=book).exists()
-        
-       
+
         context['reviews'] = reviews
         context['review_form'] = review_form
         context['user_has_borrowed'] = user_has_borrowed
         return context
-    
 
 @login_required
 def borrow_book(request, book_id):
